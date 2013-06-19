@@ -1,0 +1,134 @@
+\documentclass[a4paper,oneside,openany]{tufte-book}
+\usepackage[utf8x]{inputenc}
+\usepackage[german]{babel}
+\usepackage{microtype} % Improves character and word spacing
+\usepackage{booktabs} % Better horizontal rules in tables
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{caption}
+
+\makeatletter% since we're using commands with @ in their name
+
+\let\origappendix\appendix% save a copy of the original meaning of \appendix
+\renewcommand{\appendix}{%
+  \origappendix% do all the original \appendix stuff
+  \titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\vspace{1.5\baselineskip}\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\hspace*{0em}\appendixname~\thecontentslabel: } % before w/label (label = ``2'')
+    {\hspace*{0em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\end{fullwidth}] % after
+  \titleformat{\chapter}%
+    [display]% shape
+    {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
+    {\itshape\huge Anhang~\thechapter}% label
+    {0pt}% horizontal separation between label and title body
+    {\huge\rmfamily\itshape}% before the title body
+    [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
+  \setcounter{secnumdepth}{0}% ``number'' the appendices
+  \renewcommand{\thefigure}{\@arabic\c@figure}% define \thefigure to use only the figure number (1), not A.1
+  \renewcommand{\thetable}{\@arabic\c@table}%
+  %
+  % Add any other special appendix-related code here.
+  %
+}
+\makeatother% restore the special meaning of @
+
+
+\author{Schett Matthias}
+\title{SEN-\"{U}bung 10}
+
+\begin{document}
+
+\definecolor{gray}{rgb}{0.9,0.9,0.9} % background color for the listings
+
+\lstset{language=[Visual]Basic, morekeywords={param, local}, breaklines=true, tabsize=4, showstringspaces=false,backgroundcolor=\color{gray}, numbers=left,
+    basicstyle=\ttfamily} % standard listing settings
+
+\frontmatter
+
+\maketitle
+\tableofcontents
+\mainmatter
+
+\chapter{Aufgabe 1}
+
+\section{L\"{o}sungsidee}
+
+Es werden drei Funktoren erstellt, CharacterComparator\sidenote{Vergleicht zwei einzelene Character auf gleicheit mittels toLower() um Klein/Großschreibung zu ignorieren}, LetterFrequency\sidenote{Zählt mittels count\_if und CharacterComparator die Anzahl an zu suchenden Charactern} und CompareByLetterFrequency\sidenote{Vergleicht und sortiert die Ergebnisse von LetterFrequency nach der Häufigkeit aufsteigend}.
+
+Der Quellcode ist im Anhang unter \nameref{chap:Auf1} zu finden.
+
+\section{Testf\"{a}lle}
+
+\lstinputlisting[caption=Testtreiber]{LetterFrequency/OutputA1.txt}
+
+\chapter{Aufgabe 2}
+
+\section{L\"{o}sungsidee}
+
+Der Funktor soll in Verbindung mit std::generate funktionieren, daher wird der Funktor ohne die Übergabe von Argumenten aufgerufen. Der Konstruktor bekommt, allerdings einen Startwert
+und eine Schrittweite. Der Funktor gibt anschließend immer den Startwert += Schrittweite aus.
+
+Der Quellcode ist im Anhang unter \nameref{chap:Auf2} zu finden.
+
+\section{Testf\"{a}lle}
+
+\lstinputlisting[caption=Testtreiber]{SequenceGenerator/OutputA2.txt}
+
+\chapter{Aufgabe 3}
+
+\section{L\"{o}sungsidee}
+
+In einem Vector mit strings soll die maximale, mittlere und kürzeste String Länge mittels einen std::for\_each Aufrufes und eines Funktors realisiert werden.
+Dazu wird der Funktor StringLength implementiert. Dieser hat folgende Member
+
+\begin{itemize}
+	\item maxLength
+    \item minLength
+    \item averageLenght
+    \item numOfStrings
+\end{itemize}
+
+std::for\_each ruft den Funktor für jedes Element innerhalb der Iterator Range einzeln auf, daher wird nur ein einzelener String in den Funktor übergeben, dieser wird analysiert.
+Abschließend liefert std::for\_each eine Kopie des Funktors zurürck, auf dieser Kopie wird dann die Print() Funktion aufgerufen, um die Statistik anzuzeigen.
+Der Quellcode ist im Anhang unter \nameref{chap:Auf3} zu finden.
+
+\section{Testf\"{a}lle}
+
+\lstinputlisting[caption=Testausgabe]{StringLength/OutputA3.txt}
+
+\backmatter
+
+\appendix
+
+\setboolean{@mainmatter}{true}
+\chapter{Aufgabe 1}\label{chap:Auf1}
+
+\begin{fullwidth}
+\lstinputlisting[caption=Implementierung]{LetterFrequency/LetterFrequency.h}
+\lstinputlisting[caption=Testtreiber]{LetterFrequency/Main.cpp}
+\end{fullwidth}
+
+\chapter{Aufgabe 2}\label{chap:Auf2}
+
+\begin{fullwidth}
+\lstinputlisting[caption=Testtreiber]{SequenceGenerator/Main.cpp}
+\lstinputlisting[caption=Testtreiber]{SequenceGenerator/SequenceGenerator.h}
+\end{fullwidth}
+
+\chapter{Aufgabe 2}\label{chap:Auf2}
+
+\begin{fullwidth}
+\lstinputlisting[caption=Testtreiber]{StringLength/Main.cpp}
+\lstinputlisting[caption=Testtreiber]{StringLength/StringLength.h}
+\end{fullwidth}
+
+
+\end{document}

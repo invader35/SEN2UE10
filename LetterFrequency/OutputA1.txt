@@ -1,0 +1,4 @@
+Please input the character you want to search for: Strings: one two three four five 
+Character: e
+Frequency: 1 0 2 0 1 
+Frequency sorted: two four one five three 

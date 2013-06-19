@@ -1,0 +1,7 @@
+The strings to analyse
+short
+LongString
+AverageL
+Max Length: 10
+Min Length: 5
+Average Length: 7
